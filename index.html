@@ -34,7 +34,7 @@ let targetDiv = document.querySelector('#qrcode');
 
 let handleIndirect = () => {
     let link = window.location.href;
-    let hash = link.indexOf('#');
+    let hash = link.indexOf('?to=');
     if (hash > 0) {
         link = decodeURIComponent(link.slice(hash + 1));
         console.log(link);
@@ -59,7 +59,7 @@ let makeQRCode = (link, option) => {
     console.log(option);
 
     if (option == 'indirect') {
-        link = `https://qcl.github.io/QRCodeLinkTo/index.html#${link}`;
+        link = `https://qcl.github.io/QRCodeLinkTo/?q=${link}`;
     }
 
     qrcode.clear();
