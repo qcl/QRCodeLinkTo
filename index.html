@@ -9,6 +9,9 @@
         <div>
             <h1>QR Code Link To:</h1>
             <div>
+                <a id='toLink'><h2 id='to'></h2></a>
+            </div>
+            <div>
                 <p>Link</p>
                 <input id="link" type="text" onblur="linkDidChange(this.value);" onkeyup="linkDidChange(this.value);" >
             </div>
@@ -28,6 +31,20 @@
         <script>
 let link = '';
 let targetDiv = document.querySelector('#qrcode');
+
+let handleIndirect = () => {
+    let link = window.location.href;
+    let hash = link.indexOf('#');
+    if (hash > 0) {
+        link = decodeURIComponent(link.slice(hash + 1));
+        console.log(link);
+        let toLink = document.querySelector('#toLink');
+        toLink.href = link;
+        let to = document.querySelector('#to');
+        to.textContent = link;
+    }
+};
+
 let qrcode = new QRCode(targetDiv, {
     'text': link,
     width: 256,
@@ -41,10 +58,12 @@ let makeQRCode = (link, option) => {
     console.log(link);
     console.log(option);
 
-    if (option == 'direct') {
-        qrcode.clear();
-        qrcode.makeCode(link);
+    if (option == 'indirect') {
+        link = `https://qcl.github.io/QRCodeLinkTo/index.html#${link}`;
     }
+
+    qrcode.clear();
+    qrcode.makeCode(link);
 }
 
 let linkDidChange = (newLink) => {
@@ -59,6 +78,8 @@ let linkDidChange = (newLink) => {
 let optionsDidChange = (option) => {
     makeQRCode(link, option);
 }
+
+handleIndirect();
         </script>
 
     </body>
