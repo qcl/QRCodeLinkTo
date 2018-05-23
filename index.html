@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8' />
+        <title>QR Code Link To</title>
+        <script type="text/javascript" src="vendor/qrcode.js"></script>
+    </head>
+    <body>
+        <div>
+            <h1>QR Code Link To:</h1>
+            <div>
+                <p>Link</p>
+                <input id="link" type="text" onblur="linkDidChange(this.value);" onkeyup="linkDidChange(this.value);" >
+            </div>
+            <div>
+                <p>Options</p>
+                <input type="radio" id="direct" name="options" onclick="optionsDidChange('direct');" value="direct" checked>
+                <label for="direct">Direct</label>
+                <input type="radio" id="indirect" name="options" onclick="optionsDidChange('indirect')" value="indirect">
+                <label for="indirect">Indirect</label>
+            </div>
+            <div>
+                <p id="linkText"></p>
+                <div id="qrcode">
+                </div>
+            </div>
+        </div>
+        <script>
+let link = '';
+let targetDiv = document.querySelector('#qrcode');
+let qrcode = new QRCode(targetDiv, {
+    'text': link,
+    width: 256,
+    height: 256,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+});
+
+let makeQRCode = (link, option) => {
+    console.log(link);
+    console.log(option);
+
+    if (option == 'direct') {
+        qrcode.clear();
+        qrcode.makeCode(link);
+    }
+}
+
+let linkDidChange = (newLink) => {
+    if (newLink == link) {
+        return;
+    }
+    link = newLink;
+    let option = document.querySelector('input[name=options]:checked').value;
+    makeQRCode(link, option);
+}
+
+let optionsDidChange = (option) => {
+    makeQRCode(link, option);
+}
+        </script>
+
+    </body>
+</html>
+
